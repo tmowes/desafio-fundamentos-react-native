@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
-import { View, Image } from 'react-native';
+import { View } from 'react-native';
 
 import formatValue from '../../utils/formatValue';
 import { useCart } from '../../hooks/cart';
@@ -21,6 +22,14 @@ import {
   ProductButton,
 } from './styles';
 
+interface CartState {
+  id: string;
+  title: string;
+  image_url: string;
+  price: number;
+  quantity: number;
+}
+
 interface Product {
   id: string;
   title: string;
@@ -35,27 +44,29 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     async function loadProducts(): Promise<void> {
-      // TODO
+      // DONE LOAD PRODUCTS FROM API
+      const response = await api.get('/products');
+      setProducts(response.data);
     }
-
     loadProducts();
   }, []);
 
-  function handleAddToCart(item: Product): void {
-    // TODO
+  function handleAddToCart(item: CartState): void {
+    // DONE
+    addToCart(item);
   }
 
   return (
     <Container>
       <ProductContainer>
-        <ProductList
+        <ProductList<any>
           data={products}
-          keyExtractor={item => item.id}
+          keyExtractor={(item: { id: string }) => item.id}
           ListFooterComponent={<View />}
           ListFooterComponentStyle={{
             height: 80,
           }}
-          renderItem={({ item }) => (
+          renderItem={({ item }: { item: CartState }) => (
             <Product>
               <ProductImage source={{ uri: item.image_url }} />
               <ProductTitle>{item.title}</ProductTitle>

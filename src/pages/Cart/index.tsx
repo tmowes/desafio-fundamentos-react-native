@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useMemo } from 'react';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
 import { View } from 'react-native';
+import FloatingCart from '../../components/FloatingCart';
 
 import {
   Container,
@@ -27,6 +30,14 @@ import { useCart } from '../../hooks/cart';
 
 import formatValue from '../../utils/formatValue';
 
+interface CartState {
+  id: string;
+  title: string;
+  image_url: string;
+  price: number;
+  quantity: number;
+}
+
 interface Product {
   id: string;
   title: string;
@@ -39,36 +50,43 @@ const Cart: React.FC = () => {
   const { increment, decrement, products } = useCart();
 
   function handleIncrement(id: string): void {
-    // TODO
+    // DONE CALL HOOK USECART INCREMENT
+    increment(id);
   }
 
   function handleDecrement(id: string): void {
-    // TODO
+    // DONE CALL HOOK USECART DECREMENT
+    decrement(id);
   }
 
   const cartTotal = useMemo(() => {
-    // TODO RETURN THE SUM OF THE QUANTITY OF THE PRODUCTS IN THE CART
-
-    return formatValue(0);
+    // DONE RETURN THE SUM OF THE PRICE FROM ALL ITEMS IN THE CART
+    const total = products.reduce((acc, product) => {
+      const subtotal = product.quantity * product.price;
+      return acc + subtotal;
+    }, 0);
+    return formatValue(total);
   }, [products]);
 
   const totalItensInCart = useMemo(() => {
-    // TODO RETURN THE SUM OF THE QUANTITY OF THE PRODUCTS IN THE CART
-
-    return 0;
+    // DONE RETURN THE SUM OF THE QUANTITY OF THE PRODUCTS IN THE CART
+    const quantity = products.reduce((acc, product) => {
+      return acc + product.quantity;
+    }, 0);
+    return quantity;
   }, [products]);
 
   return (
     <Container>
       <ProductContainer>
-        <ProductList
+        <ProductList<any>
           data={products}
-          keyExtractor={item => item.id}
+          keyExtractor={(item: { id: string }) => item.id}
           ListFooterComponent={<View />}
           ListFooterComponentStyle={{
             height: 80,
           }}
-          renderItem={({ item }: { item: Product }) => (
+          renderItem={({ item }: { item: CartState }) => (
             <Product>
               <ProductImage source={{ uri: item.image_url }} />
               <ProductTitleContainer>
@@ -110,6 +128,7 @@ const Cart: React.FC = () => {
         <TotalProductsText>{`${totalItensInCart} itens`}</TotalProductsText>
         <SubtotalValue>{cartTotal}</SubtotalValue>
       </TotalProductsContainer>
+      {/* <FloatingCart /> */}
     </Container>
   );
 };
