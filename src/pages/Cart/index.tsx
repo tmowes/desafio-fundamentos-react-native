@@ -50,17 +50,17 @@ const Cart: React.FC = () => {
   const { increment, decrement, products } = useCart();
 
   function handleIncrement(id: string): void {
-    // DONE CALL HOOK USECART INCREMENT
+    // DONE: CALL HOOK USECART INCREMENT
     increment(id);
   }
 
   function handleDecrement(id: string): void {
-    // DONE CALL HOOK USECART DECREMENT
+    // DONE: CALL HOOK USECART DECREMENT
     decrement(id);
   }
 
   const cartTotal = useMemo(() => {
-    // DONE RETURN THE SUM OF THE PRICE FROM ALL ITEMS IN THE CART
+    // DONE: RETURN THE SUM OF THE PRICE FROM ALL ITEMS IN THE CART
     const total = products.reduce((acc, product) => {
       const subtotal = product.quantity * product.price;
       return acc + subtotal;
@@ -69,7 +69,7 @@ const Cart: React.FC = () => {
   }, [products]);
 
   const totalItensInCart = useMemo(() => {
-    // DONE RETURN THE SUM OF THE QUANTITY OF THE PRODUCTS IN THE CART
+    // DONE: RETURN THE SUM OF THE QUANTITY OF THE PRODUCTS IN THE CART
     const quantity = products.reduce((acc, product) => {
       return acc + product.quantity;
     }, 0);
@@ -95,10 +95,8 @@ const Cart: React.FC = () => {
                   <ProductSinglePrice>
                     {formatValue(item.price)}
                   </ProductSinglePrice>
-
                   <TotalContainer>
                     <ProductQuantity>{`${item.quantity}x`}</ProductQuantity>
-
                     <ProductPrice>
                       {formatValue(item.price * item.quantity)}
                     </ProductPrice>
